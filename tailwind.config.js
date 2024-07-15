@@ -9,7 +9,7 @@ export default {
       colors:{
         "custom-dark": "#000000",
         "custom-yellow":"#c8a97e",
-      },
+        "fff":"#243545"      },
       container: {
         center: true,
         padding: '2rem',
