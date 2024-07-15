@@ -8,10 +8,14 @@ export default {
     extend: {
       colors:{
         "custom-dark": "#000000",
+        "custom-yellow":"#c8a97e",
       },
       container: {
         center: true,
         padding: '2rem',
+      },
+      fontFamily: {
+        'great-vibes': ['Great Vibes', 'cursive'],
       },
     },
   },

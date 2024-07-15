@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const Carousel = () => {
   const slides = [
@@ -24,6 +26,10 @@ const Carousel = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + slides.length) % slides.length);
   };
 
+  useEffect(() => {
+    AOS.init({ duration: 1000 }); // AOS'u başlat ve animasyon süresini belirle
+  }, []);
+
   return (
     <div className="w-full relative h-screen">
       {slides.map((slide, index) => (
@@ -33,8 +39,9 @@ const Carousel = () => {
           style={{ left: 0, top: 0, width: '100%', height: '100%' }}
         >
           <img src={slide.image} alt={slide.title} className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <h2 className="text-2xl md:text-4xl text-white italic">{slide.title}</h2>
+          <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center">
+            <h2 className="text-6xl font-great-vibes md:text-6xl text-custom-yellow italic">{slide.title}</h2>
+            <span className='text-white text-3xl font-bold'  > Best Restaurant </span>
           </div>
         </div>
       ))}
@@ -50,18 +57,21 @@ const Carousel = () => {
       >
         &#10095;
       </button>
-      <div className="p-4 absolute bottom-0 left-0 right-0">
-        <div className="flex flex-wrap items-center justify-around">
-          {cards.map((card, index) => (
-            <div key={index} className="relative overflow-hidden rounded-lg shadow-lg">
-       <div className="max-w-[200px] max-h-[200px] object-cover rounded-full"> <img src={card.image} alt={card.title} className="w-full h-48 object-cover rounded-full" /> </div>
-              <div className="bg-black bg-opacity-50 p-4 absolute  inset-0 flex flex-col rounded-full text-center items-center justify-center">
-                <h3 className="text-white text-xl italic">{card.title}</h3>
-                <p className="text-white text-center mt-2">{card.description}</p>
-              </div>
+      <div className="md:p-4 md:absolute md:bottom-0 md:left-0 md:right-0 hidden md:flex flex-wrap items-center justify-around">
+        {cards.map((card, index) => (
+          <div
+            key={index}
+            className="relative overflow-hidden rounded-lg shadow-lg max-w-[200px] max-h-[200px] object-cover"
+            data-aos="fade-up"
+            data-aos-duration="1000"
+          >
+            <img src={card.image} alt={card.title} className="w-full h-48 object-cover rounded-full" />
+            <div className="bg-black bg-opacity-50 p-4 absolute inset-0 flex flex-col rounded-full text-center items-center justify-center">
+              <h3 className="text-white text-xl italic">{card.title}</h3>
+              <p className="text-white text-center mt-2">{card.description}</p>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   );
