@@ -26,25 +26,26 @@ const Top = () => {
         <div className="crud flex flex-col w-full gap-40 items-center">
           <div className="top flex items-center flex-col justify-center w-full">
             <h2 className="text-7xl font-great-vibes text-custom-yellow italic" data-aos="fade-up">Services</h2>
-            <span className="font-bold text-black text-6xl mt-4" data-aos="fade-up">Our Menu</span>
+            <span className="font-bold text-black text-5xl mt-4 text-center" data-aos="fade-up">Our Menu</span>
           </div>
-          <div className="cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
+          <div className="cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-10">
             {cards.map((card) => (
-              <div key={card.id} className="card relative rounded-lg overflow-hidden shadow-lg transition-all delay-100 ease-in-out transform hover:scale-105" data-aos="fade-up">
-                <img src={card.image} alt={card.title} className="w-full h-auto rounded-t-lg" />
-                <div className="p-4 bg-white">
-                  <h3 className="text-xl md:text-2xl font-semibold">{card.title}</h3>
-                  <p className="text-gray-700">{card.description}</p>
-                  <p className="text-gray-700 mt-2">{card.price}</p>
+              <div key={card.id} className="card flex flex-col rounded-lg overflow-hidden shadow-lg transition-all delay-100 ease-in-out transform hover:scale-105" data-aos="fade-up">
+                <div className="image">
+                  <img src={card.image} alt={card.title} className="w-full h-auto rounded-t-lg" />
+                </div>
+                <div className="text p-4 bg-white flex flex-col flex-grow justify-between">
+                  <div>
+                    <h3 className="text-xl md:text-2xl font-semibold">{card.title}</h3>
+                    <p className="text-gray-700">{card.description}</p>
+                    <p className="text-gray-700 mt-2">{card.price}</p>
+                  </div>
                   <div className="flex justify-between items-center mt-4">
                     <button className="text-gray-600 hover:text-gray-900 focus:outline-none transform translate-x-0">
                       <AiOutlineShoppingCart size={24} />
                     </button>
                     <button className="text-gray-600 hover:text-gray-900 focus:outline-none transform translate-x-0">
                       <AiOutlineHeart size={24} />
-                    </button>
-                    <button className="bg-custom-yellow text-white py-2 px-6 rounded-lg hover:bg-yellow-500 transition-colors duration-300 ease-in-out">
-                      Order Now
                     </button>
                   </div>
                 </div>
