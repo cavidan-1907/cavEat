@@ -25,8 +25,8 @@ const Carousel = () => {
   };
 
   return (
-    <div className="w-full">
-      <div className="relative h-screen">
+    <div className="relative">
+      <div className="h-screen relative">
         {slides.map((slide, index) => (
           <div
             key={index}
@@ -53,17 +53,12 @@ const Carousel = () => {
         </button>
       </div>
 
-      <div className="p-4 bg-white">
-        <h2 className="text-2xl text-center my-4">Featured Dishes</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="p-4 absolute bottom-0 right-0 left-0">
+        <div className="flex flex-wrap gap-4 justify-center">
           {cards.map((card, index) => (
-            <div key={index} className="relative overflow-hidden rounded-lg shadow-lg">
-              <img
-                src={card.image}
-                alt={card.title}
-                className="w-full h-48 sm:h-36 md:h-48 lg:h-60 xl:h-72 object-cover transition-transform duration-500 transform hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center p-4">
+            <div key={index} className="relative overflow-hidden rounded-lg max-w-[200px] shadow-lg">
+              <img src={card.image} alt={card.title} className="w-full h-48 object-cover rounded-t-lg" />
+              <div className="bg-black bg-opacity-50 flex flex-col items-center justify-center p-4 text-white rounded-b-lg">
                 <h3 className="text-xl text-white italic">{card.title}</h3>
                 <p className="text-white mt-2 text-center">{card.description}</p>
               </div>
