@@ -1,14 +1,27 @@
-import React from 'react';
+import React, { useState,useEffect } from 'react';
 import { FaInstagram, FaTwitter, FaFacebook } from 'react-icons/fa';
+import axios from 'axios';
 
-const chefs = [
-  { id: 1,des:"Restaurant Owner", name: 'Head Chef John', image: 'https://preview.colorlib.com/theme/feliciano/images/chef-4.jpg', instagram: 'https://www.instagram.com', twitter: 'https://www.twitter.com', facebook: 'https://www.facebook.com' },
-  { id: 2,des:"Head Chef", name: 'Assistant Chef Mary', image: 'https://preview.colorlib.com/theme/feliciano/images/chef-3.jpg', instagram: 'https://www.instagram.com', twitter: 'https://www.twitter.com', facebook: 'https://www.facebook.com' },
-  { id: 3,des:"Chef", name: 'Chef Alex', image: 'https://preview.colorlib.com/theme/feliciano/images/chef-1.jpg', instagram: 'https://www.instagram.com', twitter: 'https://www.twitter.com', facebook: 'https://www.facebook.com' },
-  { id: 4,des:"Chef", name: 'Chef Emily', image: 'https://preview.colorlib.com/theme/feliciano/images/chef-2.jpg', instagram: 'https://www.instagram.com', twitter: 'https://www.twitter.com', facebook: 'https://www.facebook.com' },
-];
+// const chefs = [
+//   { id: 1,des:"Restaurant Owner", name: 'Head Chef John', image: 'https://preview.colorlib.com/theme/feliciano/images/chef-4.jpg', instagram: 'https://www.instagram.com', twitter: 'https://www.twitter.com', facebook: 'https://www.facebook.com' },
+//   { id: 2,des:"Head Chef", name: 'Assistant Chef Mary', image: 'https://preview.colorlib.com/theme/feliciano/images/chef-3.jpg', instagram: 'https://www.instagram.com', twitter: 'https://www.twitter.com', facebook: 'https://www.facebook.com' },
+//   { id: 3,des:"Chef", name: 'Chef Alex', image: 'https://preview.colorlib.com/theme/feliciano/images/chef-1.jpg', instagram: 'https://www.instagram.com', twitter: 'https://www.twitter.com', facebook: 'https://www.facebook.com' },
+//   { id: 4,des:"Chef", name: 'Chef Emily', image: 'https://preview.colorlib.com/theme/feliciano/images/chef-2.jpg', instagram: 'https://www.instagram.com', twitter: 'https://www.twitter.com', facebook: 'https://www.facebook.com' },
+// ];
 
 const Chef = () => {
+const [chefs,setChef]=useState([]);
+
+const api="http://localhost:3000/chefs";
+useEffect(() => {
+const fetchChef=async ()=>{
+  const response = await axios.get(api)
+  setChef(response.data)
+}
+fetchChef()
+}, [chefs])
+
+
   return (
     <div className="p-10 bg-gray-100">
       <div className="container mx-auto px-10">

@@ -27,7 +27,16 @@ const Carousel = () => {
   };
 
   useEffect(() => {
-    AOS.init({ duration: 1000 }); // AOS'u başlat ve animasyon süresini belirle
+    AOS.init({ duration: 1000 });
+  }, []);
+
+  // Otomatik geçiş için interval
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -41,7 +50,7 @@ const Carousel = () => {
           <img src={slide.image} alt={slide.title} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center">
             <h2 className="text-6xl font-great-vibes md:text-6xl text-custom-yellow italic">{slide.title}</h2>
-            <span className='text-white text-3xl font-bold'  > Best Restaurant </span>
+            <span className='text-white text-3xl font-bold'> Best Restaurant </span>
           </div>
         </div>
       ))}

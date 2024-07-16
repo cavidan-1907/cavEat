@@ -1,55 +1,121 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiOutlineHeart, AiOutlineShoppingCart } from 'react-icons/ai';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import axios from 'axios';
 
 const Top = () => {
-  const cards = [
-    { id: 1, image: 'https://preview.colorlib.com/theme/feliciano/images/breakfast-1.jpg', title: 'Grilled Beef with Potatoes', description: 'Meat, Potatoes, Rice, Tomato', price: '$25' },
-    { id: 2, image: 'https://preview.colorlib.com/theme/feliciano/images/breakfast-2.jpg', title: 'Grilled Chicken with Vegetables', description: 'Chicken, Broccoli, Carrots, Rice', price: '$22' },
-    { id: 3, image: 'https://preview.colorlib.com/theme/feliciano/images/breakfast-3.jpg', title: 'Fresh Salad with Shrimp', description: 'Lettuce, Shrimp, Avocado, Tomato', price: '$18' },
-    { id: 4, image: 'https://preview.colorlib.com/theme/feliciano/images/breakfast-4.jpg', title: 'Pasta with Tomato Sauce', description: 'Pasta, Tomato Sauce, Basil, Parmesan', price: '$20' },
-    { id: 5, image: 'https://preview.colorlib.com/theme/feliciano/images/breakfast-5.jpg', title: 'Grilled Beef with Potatoes', description: 'Meat, Potatoes, Rice, Tomato', price: '$25' },
-    { id: 6, image: 'https://preview.colorlib.com/theme/feliciano/images/breakfast-6.jpg', title: 'Grilled Chicken with Vegetables', description: 'Chicken, Broccoli, Carrots, Rice', price: '$22' },
-    { id: 7, image: 'https://preview.colorlib.com/theme/feliciano/images/breakfast-7.jpg', title: 'Fresh Salad with Shrimp', description: 'Lettuce, Shrimp, Avocado, Tomato', price: '$18' },
-    { id: 8, image: 'https://preview.colorlib.com/theme/feliciano/images/breakfast-8.jpg', title: 'Pasta with Tomato Sauce', description: 'Pasta, Tomato Sauce, Basil, Parmesan', price: '$20' },
-  ];
-
-  // Initialize AOS library
+  const [cards, setCards] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [cardsPerPage] = useState(4);
+  const [category, setCategory] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const api = "http://localhost:3000/cards";
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get(api);
+      setCards(response.data);
+    };
+    fetchData();
+  }, []);
+  
   useEffect(() => {
     AOS.init({ duration: 1000 });
   }, []);
 
+  const filteredCards = cards.filter(card => 
+    (category === '' || card.category === category) &&
+    (searchTerm === '' || card.title.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+
+  const indexOfLastCard = currentPage * cardsPerPage;
+  const indexOfFirstCard = indexOfLastCard - cardsPerPage;
+  const currentCards = filteredCards.slice(indexOfFirstCard, indexOfLastCard);
+
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+
+  const handleCategoryChange = (e) => {
+    setCategory(e.target.value);
+    setCurrentPage(1); 
+  };
+
+
+  const handleSearchTermChange = (e) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1); 
+  };
+
   return (
-    <div className="p-10 bg-gray-100">
+    <div className="p-10 min-h-screen bg-cover bg-center bg-fixed"
+         style={{
+           backgroundImage: "linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://preview.colorlib.com/theme/pizza/images/about.jpg')",
+           backgroundBlendMode: "overlay",
+         }}>
       <div className="container mx-auto px-10">
         <div className="crud flex flex-col w-full gap-40 items-center">
           <div className="top flex items-center flex-col justify-center w-full">
-            <h2 className="text-7xl font-great-vibes text-custom-yellow italic" data-aos="fade-up">Services</h2>
-            <span className="font-bold text-black text-5xl mt-4 text-center" data-aos="fade-up">Our Menu</span>
+            <h2 className="text-7xl font-great-vibes text-yellow-500 italic" data-aos="fade-up">Services</h2>
+            <span className="font-bold text-white text-5xl mt-4 text-center" data-aos="fade-up">Our Menu</span>
+            <select 
+              className="mt-4 cursor-pointer p-2 border border-gray-700 rounded bg-gray-800 text-white"
+              onChange={handleCategoryChange}
+              value={category}
+            >
+              <option value="">All Categories</option>
+              <option value="Desserts">Desserts</option>
+              <option value="Pizza">Pizza</option>
+              <option value="Pasta">Pasta</option>
+            </select>
+            <input
+              type="text"
+              placeholder="Search..."
+              className="mt-4 p-2 border border-gray-700 rounded bg-gray-800 text-white"
+              value={searchTerm}
+              onChange={handleSearchTermChange}
+            />
           </div>
+          
           <div className="cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-10">
-            {cards.map((card) => (
-              <div key={card.id} className="card flex flex-col rounded-lg overflow-hidden shadow-lg transition-all delay-100 ease-in-out transform hover:scale-105" data-aos="fade-up">
-                <div className="image">
-                  <img src={card.image} alt={card.title} className="w-full h-auto rounded-t-lg" />
-                </div>
-                <div className="text p-4 bg-white flex flex-col flex-grow justify-between">
-                  <div>
-                    <h3 className="text-xl md:text-2xl font-semibold">{card.title}</h3>
-                    <p className="text-gray-700">{card.description}</p>
-                    <p className="text-gray-700 mt-2">{card.price}</p>
+            {currentCards.length > 0 ? (
+              currentCards.map((card) => (
+                <div key={card.id} className="card flex flex-col rounded-lg overflow-hidden shadow-lg transition-all delay-100 ease-in-out transform hover:scale-105 bg-gray-800" data-aos="fade-up">
+                  <div className="image rounded overflow-hidden h-64">
+                    <img src={card.image} alt={card.title} className="w-full h-full object-cover" />
                   </div>
-                  <div className="flex justify-between items-center mt-4">
-                    <button className="text-gray-600 hover:text-gray-900 focus:outline-none transform translate-x-0">
-                      <AiOutlineShoppingCart size={24} />
-                    </button>
-                    <button className="text-gray-600 hover:text-gray-900 focus:outline-none transform translate-x-0">
-                      <AiOutlineHeart size={24} />
-                    </button>
+                  <div className="text p-4 bg-gray-800 flex flex-col flex-grow justify-between">
+                    <div>
+                      <h3 className="text-xl md:text-2xl font-semibold text-white">{card.title}</h3>
+                      <p className="text-gray-400">{card.description}</p>
+                      <p className="text-yellow-500 mt-2">{card.price}$</p>
+                    </div>
+                    <div className="flex justify-between items-center mt-4">
+                      <button className="text-gray-400 hover:text-white focus:outline-none transform translate-x-0">
+                        <AiOutlineShoppingCart size={24} />
+                      </button>
+                      <button className="text-gray-400 hover:text-white focus:outline-none transform translate-x-0">
+                        <AiOutlineHeart size={24} />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ))
+            ) : (
+              <div className="text-white text-center mt-4">No items found matching "{searchTerm}"</div>
+            )}
+          </div>
+          
+          <div className="pagination mt-10 flex justify-center">
+            {Array.from({ length: Math.ceil(filteredCards.length / cardsPerPage) }, (_, index) => (
+              <button 
+                key={index + 1} 
+                onClick={() => paginate(index + 1)} 
+                className={`mx-1 px-3 py-1 border rounded ${currentPage === index + 1 ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-white'}`}
+              >
+                {index + 1}
+              </button>
             ))}
           </div>
         </div>
