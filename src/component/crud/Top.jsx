@@ -7,24 +7,23 @@ import axios from 'axios';
 const Top = () => {
   const [cards, setCards] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [cardsPerPage] = useState(4);
+  const [cardsPerPage] = useState(4); // Sayfa başına kart sayısı
   const [category, setCategory] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const api = "http://localhost:3000/cards";
-  
+
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(api);
-      setCards(response.data);
+      try {
+        const response = await axios.get(api);
+        setCards(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     };
-    fetchData();
-  }, []);
-  useEffect(()=>{
-if(window.innerWidth<768){
-  
-}
-  },[])
-  
+    fetchData();  // Arama terimini takip eden fonksiyon
+  }, [api]);
+
   useEffect(() => {
     AOS.init({ duration: 1000 });
   }, []);
@@ -38,20 +37,27 @@ if(window.innerWidth<768){
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
   const currentCards = filteredCards.slice(indexOfFirstCard, indexOfLastCard);
 
+  const numberOfPages = Math.ceil(filteredCards.length / cardsPerPage);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
-    setCurrentPage(1); 
+    setCurrentPage(1);
   };
-
 
   const handleSearchTermChange = (e) => {
     setSearchTerm(e.target.value);
-    setCurrentPage(1); 
+    setCurrentPage(1);
   };
+
+  // Auto-pagination logic
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentPage(prevPage => (prevPage % numberOfPages) + 1);
+    }, 50000); 
+    return () => clearInterval(interval);
+  }, [numberOfPages]);
 
   return (
     <div className="p-10 min-h-screen bg-cover bg-center bg-fixed"
@@ -83,10 +89,10 @@ if(window.innerWidth<768){
             />
           </div>
           
-          <div className="cards grid grid-cols-1 md:grid-cols-2   lg:grid-cols-4 gap-8 mt-10">
+          <div className="cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {currentCards.length > 0 ? (
               currentCards.map((card) => (
-                <div key={card.id} className="card flex flex-col rounded-lg overflow-hidden shadow-lg transition-all delay-100 ease-in-out transform hover:scale-105 bg-gray-800" data-aos="fade-up">
+                <div key={card.id} className="card flex flex-col rounded-lg overflow-hidden  shadow-lg transition-all delay-100 ease-in-out w-full transform hover:scale-105 bg-gray-800" data-aos="fade-up">
                   <div className="image rounded overflow-hidden h-64">
                     <img src={card.image} alt={card.title} className="w-full h-full object-cover" />
                   </div>
@@ -111,7 +117,7 @@ if(window.innerWidth<768){
               <div className="text-white text-center mt-4">No items found matching "{searchTerm}"</div>
             )}
           </div>
-          
+  
           <div className="pagination mt-10 flex justify-center">
             {Array.from({ length: Math.ceil(filteredCards.length / cardsPerPage) }, (_, index) => (
               <button 
