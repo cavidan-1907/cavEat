@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 import { BiMenu } from 'react-icons/bi';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -7,6 +8,7 @@ import 'aos/dist/aos.css';
 function Navbar() {
   const [menu, setMenu] = useState(false);
   const [scroll, setScroll] = useState(false);
+  const [user, setUser] = useState(localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')) : null);
 
   const openMenu = () => {
     setMenu(!menu);
@@ -19,6 +21,11 @@ function Navbar() {
       setScroll(false);
     }
   };
+  const handleLogout = () => {
+    localStorage.removeItem('currentUser');
+    setUser(null);
+    window.location.href = '/login';
+};
 
   useEffect(() => {
     AOS.init({ duration: 1000 });
@@ -37,7 +44,17 @@ function Navbar() {
           <li className='text-[19px]'><Link to="/about">About</Link></li>
           <li className='text-[19px]'><Link to="/menu">Menu</Link></li>
           <li className='text-[19px]'><Link to="/stories">Stories</Link></li>
-          <li className='text-[19px]'><Link to="/contact">Contact</Link></li>
+          {user?(<> 
+          <li className='text-[19px]'><Link>{user.name}</Link></li>
+          <li className='text-[19px]'>
+                                    <Button variant="link" className='logOut' onClick={handleLogout}>Logout</Button>
+                                </li>
+          </>
+          ):(
+                         <li className='text-[19px]'><Link to="/Login">Login</Link></li>
+          )
+          }
+        
           <li className='text-[19px]'><Link to="/book-table" className="hover:underline" data-aos="fade-left">Order Now</Link></li>
         </ul>
         <BiMenu onClick={openMenu} className='text-[30px] text-white cursor-pointer md:hidden' />
@@ -48,7 +65,19 @@ function Navbar() {
           <li className='text-[19px]'><Link to="/about" className="hover:underline" data-aos="fade-left">About</Link></li>
           <li className='text-[19px]'><Link to="/menu" className="hover:underline" data-aos="fade-left">Menu</Link></li>
           <li className='text-[19px]'><Link to="/stories" className="hover:underline" data-aos="fade-left">Stories</Link></li>
-          <li className='text-[19px]'><Link to="/contact" className="hover:underline" data-aos="fade-left">Contact</Link></li>
+          {user?(<> 
+          <li className='text-[19px]'><Link>{user.name}</Link></li>
+          <li className='text-[19px]'>
+                                    <Button variant="link" className='logOut' onClick={handleLogout}>Logout</Button>
+                                </li>
+          
+          </>
+          
+          ):(
+                         <li className='text-[19px]'><Link to="/Login">Login</Link></li>
+          )
+          }
+        
           <li className='text-[19px]'><Link to="/book-table" className="hover:underline" data-aos="fade-left">Order Now</Link></li>
         </ul>
       </div>

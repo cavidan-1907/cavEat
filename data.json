@@ -1,0 +1,52 @@
+{
+  "user": [
+    {
+      "name": "Cavidan",
+      "email": "Cavidanvelizade9@gmail.com",
+      "passeord": "12345",
+      "id": "1"
+    },
+    {
+      "id": "2765",
+      "name": "Cavidan",
+      "email": "Cavidanvelizade921@gmail.com",
+      "password": "2345",
+      "fav": []
+    },
+    {
+      "id": "b9e6",
+      "name": "Cavidan1907",
+      "email": "Cavidanvelizade19@gmail.com",
+      "password": "2222",
+      "fav": []
+    },
+    {
+      "id": "9169",
+      "name": "cv",
+      "email": "Cavidanvelizade1@gmail.com",
+      "password": "1111",
+      "fav": []
+    },
+    {
+      "id": "3754",
+      "name": "Cavidan",
+      "email": "Cavidanvelizade21@gmail.com",
+      "password": "121",
+      "fav": []
+    },
+    {
+      "id": "09c2",
+      "name": "Cavidan",
+      "email": "Cavidanvelizade789@gmail.com",
+      "password": "12345",
+      "fav": []
+    },
+    {
+      "id": "8136",
+      "name": "cvs",
+      "email": "Cavidanvelizade13@gmail.com",
+      "password": "12",
+      "fav": []
+    }
+  ]
+}

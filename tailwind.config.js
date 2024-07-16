@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        'Login': "url('https://preview.colorlib.com/theme/feliciano/images/bg_1.jpg')",
+      },
       colors:{
         "custom-dark": "#000000",
         "custom-yellow":"#c8a97e",

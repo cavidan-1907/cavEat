@@ -12,7 +12,6 @@ function Home() {
       <Services/>
       <Top/>
       <Chef/>
-
     </div>
   )
 }
