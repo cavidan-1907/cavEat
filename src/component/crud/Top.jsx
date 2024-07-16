@@ -19,6 +19,11 @@ const Top = () => {
     };
     fetchData();
   }, []);
+  useEffect(()=>{
+if(window.innerWidth<768){
+  
+}
+  },[])
   
   useEffect(() => {
     AOS.init({ duration: 1000 });
@@ -78,7 +83,7 @@ const Top = () => {
             />
           </div>
           
-          <div className="cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-10">
+          <div className="cards grid grid-cols-1 md:grid-cols-2   lg:grid-cols-4 gap-8 mt-10">
             {currentCards.length > 0 ? (
               currentCards.map((card) => (
                 <div key={card.id} className="card flex flex-col rounded-lg overflow-hidden shadow-lg transition-all delay-100 ease-in-out transform hover:scale-105 bg-gray-800" data-aos="fade-up">
