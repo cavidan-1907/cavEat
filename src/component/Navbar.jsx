@@ -43,7 +43,7 @@ function Navbar() {
           <li className='text-[19px]'><Link to="/">Home</Link></li>
           <li className='text-[19px]'><Link to="/about">About</Link></li>
           <li className='text-[19px]'><Link to="/menu">Menu</Link></li>
-          <li className='text-[19px]'><Link to="/stories">Stories</Link></li>
+          <li className='text-[19px]'><Link to="/Favorit">Favorit</Link></li>
           {user?(<> 
           <li className='text-[19px]'><Link>{user.name}</Link></li>
           <li className='text-[19px]'>

@@ -1,11 +1,11 @@
 import React from 'react'
 
-function Chat() {
+function chefPanel() {
   return (
     <div>
-      v
+      
     </div>
   )
 }
 
-export default Chat
+export default chefPanel

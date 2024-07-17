@@ -1,35 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { AiOutlineHeart, AiFillHeart, AiOutlineShoppingCart } from 'react-icons/ai';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Top = () => {
-  const [cards, setCards] = useState([]);
+const Favorit = () => {
+  const [favCards, setFavCards] = useState([]);
+  const [user, setUser] = useState(localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')) : null);
   const [currentPage, setCurrentPage] = useState(1);
   const [cardsPerPage] = useState(4);
-  const [category, setCategory] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
-  const api = "http://localhost:3000/cards";
-  const [user, setUser] = useState(localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')) : null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(api);
-        setCards(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
+    const fetchFavs = async () => {
+      if (user) {
+        try {
+          const response = await axios.get(`http://localhost:3000/cards`);
+          const allCards = response.data;
+          const favCards = allCards.filter(card => user.fav.includes(card.id));
+          setFavCards(favCards);
+        } catch (error) {
+          console.error('fetch edəndə xəta baş verdi:', error);
+        }
       }
     };
-    fetchData();
-  }, [api]);
-
-  useEffect(() => {
-    AOS.init({ duration: 1000 });
-  }, []);
+    fetchFavs();
+  }, [user]);
 
   const addFav = (id) => {
     if (!user) {
@@ -49,6 +44,8 @@ const Top = () => {
     axios.patch(`http://localhost:3000/user/${user.id}`, { fav: updatedUser.fav })
       .then(response => {
         console.log('User updated:', response.data);
+        const updatedFavCards = favCards.filter(card => updatedUser.fav.includes(card.id));
+        setFavCards(updatedFavCards);
       })
       .catch(error => {
         console.error('Error updating user:', error);
@@ -59,35 +56,14 @@ const Top = () => {
     return user ? user.fav.includes(id) : false;
   };
 
-  const filteredCards = cards.filter(card =>
-    (category === '' || card.category === category) &&
-    (searchTerm === '' || card.title.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
-
+  // Pagination calculations
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
-  const currentCards = filteredCards.slice(indexOfFirstCard, indexOfLastCard);
+  const currentCards = favCards.slice(indexOfFirstCard, indexOfLastCard);
 
-  const numberOfPages = Math.ceil(filteredCards.length / cardsPerPage);
+  const numberOfPages = Math.ceil(favCards.length / cardsPerPage);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-  const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
-    setCurrentPage(1);
-  };
-
-  const handleSearchTermChange = (e) => {
-    setSearchTerm(e.target.value);
-    setCurrentPage(1);
-  };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentPage(prevPage => (prevPage % numberOfPages) + 1);
-    }, 5000); 
-    return () => clearInterval(interval);
-  }, [numberOfPages]);
 
   return (
     <div className="p-10 min-h-screen bg-cover bg-center bg-fixed"
@@ -99,31 +75,14 @@ const Top = () => {
       <div className="container mx-auto px-10">
         <div className="crud flex flex-col w-full gap-40 items-center">
           <div className="top flex items-center flex-col justify-center w-full">
-            <h2 className="text-7xl font-great-vibes text-yellow-500 italic" data-aos="fade-up">Services</h2>
-            <span className="font-bold text-white text-5xl mt-4 text-center" data-aos="fade-up">Our Menu</span>
-            <select 
-              className="mt-4 cursor-pointer p-2 border border-gray-700 rounded bg-gray-800 text-white"
-              onChange={handleCategoryChange}
-              value={category}
-            >
-              <option value="">All Categories</option>
-              <option value="Desserts">Desserts</option>
-              <option value="Pizza">Pizza</option>
-              <option value="Pasta">Pasta</option>
-            </select>
-            <input
-              type="text"
-              placeholder="Search..."
-              className="mt-4 p-2 border border-gray-700 rounded bg-gray-800 text-white"
-              value={searchTerm}
-              onChange={handleSearchTermChange}
-            />
+            <h2 className="text-7xl font-great-vibes text-yellow-500 italic">Favorites</h2>
+            <span className="font-bold text-white text-5xl mt-4 text-center">Your Favorite Items</span>
           </div>
-          
+
           <div className="cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {currentCards.length > 0 ? (
               currentCards.map((card) => (
-                <div key={card.id} className="card flex flex-col rounded-lg overflow-hidden shadow-lg transition-all delay-100 ease-in-out w-full transform hover:scale-105 bg-gray-800" data-aos="fade-up">
+                <div key={card.id} className="card flex flex-col rounded-lg overflow-hidden shadow-lg transition-all delay-100 ease-in-out w-full transform hover:scale-105 bg-gray-800">
                   <div className="image rounded overflow-hidden h-64">
                     <img src={card.image} alt={card.title} className="w-full h-full object-cover" />
                   </div>
@@ -148,10 +107,10 @@ const Top = () => {
                 </div>
               ))
             ) : (
-              <div className="text-white text-center mt-4">No items found matching "{searchTerm}"</div>
+              <div className="text-white text-center mt-4">You have no favorite items.</div>
             )}
           </div>
-  
+
           <div className="pagination mt-10 flex justify-center">
             {Array.from({ length: numberOfPages }, (_, index) => (
               <button 
@@ -159,14 +118,15 @@ const Top = () => {
                 onClick={() => paginate(index + 1)} 
                 className={`mx-1 px-3 py-1 border rounded ${currentPage === index + 1 ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-white'}`}
               >
-                {index + 1}
+                {index +  1}
               </button>
             ))}
           </div>
         </div>
       </div>
     </div>
-  );
+  ); 
 }
 
-export default Top;
+export default Favorit;
+     
