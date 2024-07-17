@@ -1,34 +1,69 @@
 import React, { useEffect, useState } from 'react';
+import { AiOutlineHeart, AiFillHeart, AiOutlineShoppingCart } from 'react-icons/ai';
 import axios from 'axios';
-import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Favorites = () => {
-  const [favorites, setFavorites] = useState([]);
+const FavoritesPage = () => {
+  const [favCards, setFavCards] = useState([]);
   const [user, setUser] = useState(localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')) : null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [cardsPerPage] = useState(4);
 
   useEffect(() => {
-    const fetchFavorites = async () => {
-      if (!user) {
-        toast.error("Favoritlere baxmaq  ucun hesabınıza giriş !");
-        return;
-      }
-
-      try {
-        const response = await axios.get(`http://localhost:3000/user/${user.id}`);
-        const favIds = response.data.fav;
-        const favItemsResponse = await axios.get(`http://localhost:3000/cards`);
-        const favItems = favItemsResponse.data.filter(card => favIds.includes(card.id));
-        setFavorites(favItems);
-      } catch (error) {
-        console.error('Favori öğeler getirilirken hata oluştu:', error);
-        toast.error("Favori öğeler getirilirken bir hata oluştu.");
+    const fetchFavs = async () => {
+      if (user) {
+        try {
+          const response = await axios.get(`http://localhost:3000/cards`);
+          const allCards = response.data;
+          const favCards = allCards.filter(card => user.fav.includes(card.id));
+          setFavCards(favCards);
+        } catch (error) {
+          console.error('Error fetching favorite cards:', error);
+        }
       }
     };
-
-    fetchFavorites();
+    fetchFavs();
   }, [user]);
+
+  const addFav = (id) => {
+    if (!user) {
+      toast.error("Favorilere eklemek için hesabınıza giriş yapın!");
+      return;
+    }
+
+    const updatedUser = { ...user };
+    if (updatedUser.fav.includes(id)) {
+      updatedUser.fav = updatedUser.fav.filter(favId => favId !== id);
+    } else {
+      updatedUser.fav.push(id);
+    }
+    setUser(updatedUser);
+    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+
+    axios.patch(`http://localhost:3000/user/${user.id}`, { fav: updatedUser.fav })
+      .then(response => {
+        console.log('User updated:', response.data);
+        const updatedFavCards = favCards.filter(card => updatedUser.fav.includes(card.id));
+        setFavCards(updatedFavCards);
+      })
+      .catch(error => {
+        console.error('Error updating user:', error);
+      });
+  };
+
+  const isFav = (id) => {
+    return user ? user.fav.includes(id) : false;
+  };
+
+  // Pagination calculations
+  const indexOfLastCard = currentPage * cardsPerPage;
+  const indexOfFirstCard = indexOfLastCard - cardsPerPage;
+  const currentCards = favCards.slice(indexOfFirstCard, indexOfLastCard);
+
+  const numberOfPages = Math.ceil(favCards.length / cardsPerPage);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="p-10 min-h-screen bg-cover bg-center bg-fixed"
@@ -38,16 +73,16 @@ const Favorites = () => {
          }}>
       <ToastContainer />
       <div className="container mx-auto px-10">
-        <div className="flex flex-col w-full gap-40 items-center">
+        <div className="crud flex flex-col w-full gap-40 items-center">
           <div className="top flex items-center flex-col justify-center w-full">
-            <h2 className="text-7xl font-great-vibes text-yellow-500 italic" data-aos="fade-up">Favorites</h2>
-            <span className="font-bold text-white text-5xl mt-4 text-center" data-aos="fade-up">Your Favorite Items</span>
+            <h2 className="text-7xl font-great-vibes text-yellow-500 italic">Favorites</h2>
+            <span className="font-bold text-white text-5xl mt-4 text-center">Your Favorite Items</span>
           </div>
-          
+
           <div className="cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {favorites.length > 0 ? (
-              favorites.map((card) => (
-                <div key={card.id} className="card flex flex-col rounded-lg overflow-hidden shadow-lg transition-all delay-100 ease-in-out w-full transform hover:scale-105 bg-gray-800" data-aos="fade-up">
+            {currentCards.length > 0 ? (
+              currentCards.map((card) => (
+                <div key={card.id} className="card flex flex-col rounded-lg overflow-hidden shadow-lg transition-all delay-100 ease-in-out w-full transform hover:scale-105 bg-gray-800">
                   <div className="image rounded overflow-hidden h-64">
                     <img src={card.image} alt={card.title} className="w-full h-full object-cover" />
                   </div>
@@ -58,23 +93,39 @@ const Favorites = () => {
                       <p className="text-yellow-500 mt-2">{card.price}$</p>
                     </div>
                     <div className="flex justify-between items-center mt-4">
+                      <button className="text-gray-400 hover:text-white focus:outline-none transform translate-x-0">
+                        <AiOutlineShoppingCart size={24} />
+                      </button>
                       <button 
                         className="text-gray-400 hover:text-white focus:outline-none transform translate-x-0"
+                        onClick={() => addFav(card.id)}
                       >
-                        {user && user.fav.includes(card.id) ? <AiFillHeart size={24} /> : <AiOutlineHeart size={24} />}
+                        {isFav(card.id) ? <AiFillHeart size={24} /> : <AiOutlineHeart size={24} />}
                       </button>
                     </div>
                   </div>
                 </div>
               ))
             ) : (
-              <div className="text-white text-center mt-4">No favorite items found</div>
+              <div className="text-white text-center mt-4">You have no favorite items.</div>
             )}
+          </div>
+
+          <div className="pagination mt-10 flex justify-center">
+            {Array.from({ length: numberOfPages }, (_, index) => (
+              <button 
+                key={index + 1} 
+                onClick={() => paginate(index + 1)} 
+                className={`mx-1 px-3 py-1 border rounded ${currentPage === index + 1 ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-white'}`}
+              >
+                {index + 1}
+              </button>
+            ))}
           </div>
         </div>
       </div>
     </div>
   );
-};
+}
 
-export default Favorites;
+export default FavoritesPage;
