@@ -127,7 +127,7 @@ const Top = () => {
               >
                 {index + 1}
               </button>
-            ))}
+            ))} 
           </div> 
         </div>
       </div>
