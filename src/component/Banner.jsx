@@ -30,7 +30,7 @@ const Carousel = () => {
     AOS.init({ duration: 1000 });
   }, []);
 
-  // Otomatik geçiş için interval
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);

@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Favorit = () => {
   const [favCards, setFavCards] = useState([]);
-  const [user, setUser] = useState(localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')) : null);
+  const [user, setUser] = useState(localStorage.getItem('currentUser3') ? JSON.parse(localStorage.getItem('currentUser3')) : null);
   const [currentPage, setCurrentPage] = useState(1);
   const [cardsPerPage] = useState(4);
 
@@ -41,7 +41,7 @@ const Favorit = () => {
       updatedUser.fav.push(id);
     }
     setUser(updatedUser);
-    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+    localStorage.setItem('currentUser3', JSON.stringify(updatedUser));
 
     axios.patch(`https://irradiated-silicon-antler.glitch.me/user/${user.id}`, { fav: updatedUser.fav })
       .then(response => {
@@ -71,7 +71,7 @@ const Favorit = () => {
       updatedUser.basket.push({ id, count: 1 });
     }
     setUser(updatedUser);
-    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+    localStorage.setItem('currentUse2r', JSON.stringify(updatedUser));
 
     axios.patch(`https://irradiated-silicon-antler.glitch.me/user/${user.id}`, { basket: updatedUser.basket })
       .then(response => {

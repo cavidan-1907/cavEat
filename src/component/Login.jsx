@@ -30,14 +30,16 @@ const AuthPage = () => {
             }
 
             try {
-                const existingUsersResponse = await axios.get('ttps://irradiated-silicon-antler.glitch.me/user');
+                const existingUsersResponse = await axios.get('https://irradiated-silicon-antler.glitch.me/user');
                 const existingUser = existingUsersResponse.data.find(u => u.email === formData.email);
                 if (existingUser) {
                     toast.error('Bu email ilə qeydiyyatdan keçmiş istifadəçi artıq var.');
                     return;
                 }
 
-                const response = await axios.post('ttps://irradiated-silicon-antler.glitch.me/user', {
+                console.log(existingUsersResponse.data)
+
+                const response = await axios.post('https://irradiated-silicon-antler.glitch.me/user', {
                     name: formData.name,
                     email: formData.email,
                     password: formData.password,
@@ -47,7 +49,7 @@ const AuthPage = () => {
 
                 if (response.status === 201) {
                     toast.success('Qeydiyyat uğurlu oldu!');
-                    localStorage.setItem('currentUser', JSON.stringify(response.data));
+                    localStorage.setItem('currentUser3', JSON.stringify(response.data));
                     setShowRegister(false); // Qeydiyyatdan sonra giriş formasını göstər
                     setFormData({
                         name: '',
@@ -63,10 +65,10 @@ const AuthPage = () => {
             }
         } else {
             try {
-                const response = await axios.get('ttps://irradiated-silicon-antler.glitch.me/user');
+                const response = await axios.get('https://irradiated-silicon-antler.glitch.me/user');
                 const user = response.data.find(u => u.email === formData.email && u.password === formData.password);
                 if (user) {
-                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    localStorage.setItem('currentUser3', JSON.stringify(user));
                     toast.success('Giriş uğurlu oldu!');
                     window.location.href = "/";
                 } else {

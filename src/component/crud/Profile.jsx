@@ -5,7 +5,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 const User = () => {
-  const [user, setUser] = useState(localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')) : null);
+  const [user, setUser] = useState(localStorage.getItem('currentUser3') ? JSON.parse(localStorage.getItem('currentUser3')) : null);
   const [favorites, setFavorites] = useState([]);
   const [basket, setBasket] = useState([]);
 
@@ -15,7 +15,7 @@ const User = () => {
     const fetchData = async () => {
       if (user) {
         try {
-          const response = await axios.get('ttps://irradiated-silicon-antler.glitch.me/cards');
+          const response = await axios.get('https://irradiated-silicon-antler.glitch.me/cards');
           const allCards = response.data;
           console.log('allCards:', allCards);
           console.log('user.fav:', user.fav);
@@ -35,7 +35,7 @@ const User = () => {
   }, [user]);
 
   const handleLogout = () => {
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem('currentUser3');
     setUser(null);
     window.location.href = '/login';
   };

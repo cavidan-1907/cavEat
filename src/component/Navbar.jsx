@@ -7,7 +7,7 @@ import 'aos/dist/aos.css';
 function Navbar() {
   const [menu, setMenu] = useState(false);
   const [scroll, setScroll] = useState(false);
-  const [user, setUser] = useState(localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')) : null);
+  const [user, setUser] = useState(localStorage.getItem('currentUser3') ? JSON.parse(localStorage.getItem('currentUser3')) : null);
 
   const openMenu = () => {
     setMenu(!menu);
@@ -22,7 +22,7 @@ function Navbar() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem('currentUser3');
     setUser(null);
     window.location.href = '/login';
   };

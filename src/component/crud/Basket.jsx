@@ -8,7 +8,7 @@ const BasketPage = () => {
   const [basketCards, setBasketCards] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [cardsPerPage] = useState(4);
-  const [user, setUser] = useState(localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')) : null);
+  const [user, setUser] = useState(localStorage.getItem('currentUser3') ? JSON.parse(localStorage.getItem('currentUser3')) : null);
 
   useEffect(() => {
     const fetchBasketCards = async () => {
@@ -56,7 +56,7 @@ const BasketPage = () => {
     }
 
     setUser(updatedUser);
-    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+    localStorage.setItem('currentUser3', JSON.stringify(updatedUser));
 
     try {
       await axios.patch(`https://irradiated-silicon-antler.glitch.me/user/${user.id}`, { basket: updatedUser.basket });

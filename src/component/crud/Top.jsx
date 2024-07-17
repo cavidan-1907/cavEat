@@ -15,7 +15,7 @@ const Top = () => {
   const [category, setCategory] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const api = "https://irradiated-silicon-antler.glitch.me/cards";
-  const [user, setUser] = useState(localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')) : null);
+  const [user, setUser] = useState(localStorage.getItem('currentUser3')? JSON.parse(localStorage.getItem('currentUser3')) : null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,7 +46,7 @@ const Top = () => {
       updatedUser.fav.push(id);
     }
     setUser(updatedUser);
-    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+    localStorage.setItem('currentUser3', JSON.stringify(updatedUser));
 
     axios.patch(`https://irradiated-silicon-antler.glitch.me/user/${user.id}`, { fav: updatedUser.fav })
       .then(response => {
@@ -70,7 +70,7 @@ const Top = () => {
       updatedUser.basket.push({ id, count: 1 });
     }
     setUser(updatedUser);
-    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+    localStorage.setItem('currentUser3', JSON.stringify(updatedUser));
 
     axios.patch(`https://irradiated-silicon-antler.glitch.me/user/${user.id}`, { basket: updatedUser.basket })
       .then(response => {
