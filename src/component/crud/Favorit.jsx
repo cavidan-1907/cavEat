@@ -129,3 +129,4 @@ const Favorit = () => {
 }
 
 export default Favorit;
+    
