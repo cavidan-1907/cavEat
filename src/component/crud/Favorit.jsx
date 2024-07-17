@@ -122,7 +122,7 @@ const Favorit = () => {
               </button>
             ))}
           </div>
-        </div>
+        </div>  
       </div>
     </div>
   );
