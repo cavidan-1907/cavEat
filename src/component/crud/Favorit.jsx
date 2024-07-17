@@ -118,8 +118,8 @@ const Favorit = () => {
                 onClick={() => paginate(index + 1)} 
                 className={`mx-1 px-3 py-1 border rounded ${currentPage === index + 1 ? 'bg-yellow-500 text-gray-900' : 'bg-gray-700 text-white'}`}
               >
-                {index +  1}
-              </button>
+                {index + 1}
+              </button>  
             ))}
           </div>
         </div>
