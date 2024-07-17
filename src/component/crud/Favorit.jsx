@@ -19,7 +19,7 @@ const FavoritesPage = () => {
           const favCards = allCards.filter(card => user.fav.includes(card.id));
           setFavCards(favCards);
         } catch (error) {
-          console.error('Error fetching favorite cards:', error);
+          console.error('fetch edəndə xəta baş verdi:', error);
         }
       }
     };
@@ -28,7 +28,7 @@ const FavoritesPage = () => {
 
   const addFav = (id) => {
     if (!user) {
-      toast.error("Favorilere eklemek için hesabınıza giriş yapın!");
+      toast.error("Favoritlərə əlavə etmək üçün hesabınıza giriş edin!");
       return;
     }
 
