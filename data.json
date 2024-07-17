@@ -25,14 +25,24 @@
       "name": "cv",
       "email": "Cavidanvelizade1@gmail.com",
       "password": "1111",
-      "fav": []
+      "fav": [
+        "1",
+        "2",
+        "7",
+        "3",
+        "8"
+      ]
     },
     {
       "id": "3754",
       "name": "Cavidan",
       "email": "Cavidanvelizade21@gmail.com",
       "password": "121",
-      "fav": []
+      "fav": [
+        "1",
+        "3",
+        "9"
+      ]
     },
     {
       "id": "09c2",
@@ -46,12 +56,20 @@
       "name": "cvs",
       "email": "Cavidanvelizade13@gmail.com",
       "password": "12",
-      "fav": []
+      "fav": [
+        "11",
+        "12",
+        "9",
+        "10",
+        "1",
+        "7",
+        "8"
+      ]
     }
   ],
   "cards": [
     {
-      "id": 1,
+      "id": "1",
       "category": "Desserts",
       "image": "https://preview.colorlib.com/theme/cakes/assets/img/gallery/items3.png",
       "title": "BlackForest",
@@ -59,7 +77,7 @@
       "price": 5
     },
     {
-      "id": 2,
+      "id": "2",
       "category": "Desserts",
       "image": "https://preview.colorlib.com/theme/cakes/assets/img/gallery/items1.png",
       "title": "Chocolate",
@@ -67,7 +85,7 @@
       "price": 6
     },
     {
-      "id": 3,
+      "id": "3",
       "category": "Desserts",
       "image": "https://preview.colorlib.com/theme/cakes/assets/img/gallery/items2.png",
       "title": "SweetHeart",
@@ -75,7 +93,7 @@
       "price": 7
     },
     {
-      "id": 4,
+      "id": "4",
       "category": "Desserts",
       "image": "https://preview.colorlib.com/theme/cakes/assets/img/gallery/items4.png",
       "title": "BlackForest",
@@ -83,7 +101,7 @@
       "price": 5
     },
     {
-      "id": 5,
+      "id": "5",
       "category": "Desserts",
       "image": "https://preview.colorlib.com/theme/cakes/assets/img/gallery/items5.png",
       "title": "Chocolate",
@@ -91,7 +109,7 @@
       "price": 6
     },
     {
-      "id": 6,
+      "id": "6",
       "category": "Desserts",
       "image": "https://preview.colorlib.com/theme/cakes/assets/img/gallery/items6.png",
       "title": "SweetHeart",
@@ -99,25 +117,23 @@
       "price": 7
     },
     {
-      "id": 7,
+      "id": "7",
       "category": "Pizza",
       "image": "https://preview.colorlib.com/theme/pizza/images/pizza-1.jpg",
       "title": "Italian Pizza",
       "description": "A small river named Duden flows by their place and supplies",
       "price": 12
     },
-    
     {
-      "id": 8,
+      "id": "8",
       "category": "Pizza",
       "image": "https://preview.colorlib.com/theme/pizza/images/pizza-1.jpg",
       "title": "Italian Pizza",
       "description": "A small river named Duden flows by their place and supplies",
       "price": 12
     },
-    
     {
-      "id": 9,
+      "id": "9",
       "category": "Pizza",
       "image": "https://preview.colorlib.com/theme/pizza/images/pizza-2.jpg",
       "title": "Mahsun Pizza",
@@ -125,7 +141,7 @@
       "price": 12
     },
     {
-      "id": 10,
+      "id": "10",
       "category": "Pizza",
       "image": "https://preview.colorlib.com/theme/pizza/images/pizza-3.jpg",
       "title": "Cavidan Pizza",
@@ -133,7 +149,7 @@
       "price": 12
     },
     {
-      "id": 11,
+      "id": "11",
       "category": "Pizzas",
       "image": "https://preview.colorlib.com/theme/pizza/images/pizza-5.jpg",
       "title": "Davud Pizza",
@@ -141,7 +157,7 @@
       "price": 12
     },
     {
-      "id": 12,
+      "id": "12",
       "category": "Pizza",
       "image": "https://preview.colorlib.com/theme/pizza/images/pizza-4.jpg",
       "title": "Samir Pizza",
@@ -149,20 +165,50 @@
       "price": 12
     },
     {
-      "id":13,
-      "category":"Pasta",
-      "image":"https://t3.ftcdn.net/jpg/02/55/53/44/240_F_255534476_n8JzjZtzOFW5g3TXTLMd6QGVnToi6hqj.jpg",
-      "title":"Spaghetti",
-      "description":"Spaghetti alla Amatriciana with pancetta bacon, tomatoes and pecorino cheese",
-      "price":35
+      "id": "13",
+      "category": "Pasta",
+      "image": "https://t3.ftcdn.net/jpg/02/55/53/44/240_F_255534476_n8JzjZtzOFW5g3TXTLMd6QGVnToi6hqj.jpg",
+      "title": "Spaghetti",
+      "description": "Spaghetti alla Amatriciana with pancetta bacon, tomatoes and pecorino cheese",
+      "price": 35
     }
   ],
-
-
   "chefs": [
-    { "id": 1, "des": "Restaurant Owner", "name": "Head Chef John", "image": "https://preview.colorlib.com/theme/feliciano/images/chef-4.jpg", "instagram": "https://www.instagram.com", "twitter": "https://www.twitter.com", "facebook": "https://www.facebook.com" },
-    { "id": 2, "des": "Head Chef", "name": "Assistant Chef Mary", "image": "https://preview.colorlib.com/theme/feliciano/images/chef-3.jpg", "instagram": "https://www.instagram.com", "twitter": "https://www.twitter.com", "facebook": "https://www.facebook.com" },
-    { "id": 3, "des": "Chef", "name": "Chef Alex", "image": "https://preview.colorlib.com/theme/feliciano/images/chef-1.jpg", "instagram": "https://www.instagram.com", "twitter": "https://www.twitter.com", "facebook": "https://www.facebook.com" },
-    { "id": 4, "des": "Chef", "name": "Chef Emily", "image": "https://preview.colorlib.com/theme/feliciano/images/chef-2.jpg", "instagram": "https://www.instagram.com", "twitter": "https://www.twitter.com", "facebook": "https://www.facebook.com" }
+    {
+      "id": "1",
+      "des": "Restaurant Owner",
+      "name": "Head Chef John",
+      "image": "https://preview.colorlib.com/theme/feliciano/images/chef-4.jpg",
+      "instagram": "https://www.instagram.com",
+      "twitter": "https://www.twitter.com",
+      "facebook": "https://www.facebook.com"
+    },
+    {
+      "id": "2",
+      "des": "Head Chef",
+      "name": "Assistant Chef Mary",
+      "image": "https://preview.colorlib.com/theme/feliciano/images/chef-3.jpg",
+      "instagram": "https://www.instagram.com",
+      "twitter": "https://www.twitter.com",
+      "facebook": "https://www.facebook.com"
+    },
+    {
+      "id": "3",
+      "des": "Chef",
+      "name": "Chef Alex",
+      "image": "https://preview.colorlib.com/theme/feliciano/images/chef-1.jpg",
+      "instagram": "https://www.instagram.com",
+      "twitter": "https://www.twitter.com",
+      "facebook": "https://www.facebook.com"
+    },
+    {
+      "id": "4",
+      "des": "Chef",
+      "name": "Chef Emily",
+      "image": "https://preview.colorlib.com/theme/feliciano/images/chef-2.jpg",
+      "instagram": "https://www.instagram.com",
+      "twitter": "https://www.twitter.com",
+      "facebook": "https://www.facebook.com"
+    }
   ]
 }

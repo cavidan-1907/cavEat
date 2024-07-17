@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { AiOutlineHeart, AiOutlineShoppingCart } from 'react-icons/ai';
+import { AiOutlineHeart, AiFillHeart, AiOutlineShoppingCart } from 'react-icons/ai';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Top = () => {
   const [cards, setCards] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [cardsPerPage] = useState(4); // Sayfa başına kart sayısı
+  const [cardsPerPage] = useState(4);
   const [category, setCategory] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const api = "http://localhost:3000/cards";
+  const [user, setUser] = useState(localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')) : null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,14 +24,42 @@ const Top = () => {
         console.error('Error fetching data:', error);
       }
     };
-    fetchData();  // Arama terimini takip eden fonksiyon
+    fetchData();
   }, [api]);
 
   useEffect(() => {
     AOS.init({ duration: 1000 });
   }, []);
 
-  const filteredCards = cards.filter(card => 
+  const addFav = (id) => {
+    if (!user) {
+      toast.error("Favoritlərə əlavə etmək üçün hesabınıza giriş edin!");
+      return;
+    }
+
+    const updatedUser = { ...user };
+    if (updatedUser.fav.includes(id)) {
+      updatedUser.fav = updatedUser.fav.filter(favId => favId !== id);
+    } else {
+      updatedUser.fav.push(id);
+    }
+    setUser(updatedUser);
+    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+
+    axios.patch(`http://localhost:3000/user/${user.id}`, { fav: updatedUser.fav })
+      .then(response => {
+        console.log('User updated:', response.data);
+      })
+      .catch(error => {
+        console.error('Error updating user:', error);
+      });
+  };
+
+  const isFav = (id) => {
+    return user ? user.fav.includes(id) : false;
+  };
+
+  const filteredCards = cards.filter(card =>
     (category === '' || card.category === category) &&
     (searchTerm === '' || card.title.toLowerCase().includes(searchTerm.toLowerCase()))
   );
@@ -51,11 +82,10 @@ const Top = () => {
     setCurrentPage(1);
   };
 
-  // Auto-pagination logic
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentPage(prevPage => (prevPage % numberOfPages) + 1);
-    }, 50000); 
+    }, 5000); 
     return () => clearInterval(interval);
   }, [numberOfPages]);
 
@@ -65,6 +95,7 @@ const Top = () => {
            backgroundImage: "linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://preview.colorlib.com/theme/pizza/images/about.jpg')",
            backgroundBlendMode: "overlay",
          }}>
+      <ToastContainer />
       <div className="container mx-auto px-10">
         <div className="crud flex flex-col w-full gap-40 items-center">
           <div className="top flex items-center flex-col justify-center w-full">
@@ -92,7 +123,7 @@ const Top = () => {
           <div className="cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {currentCards.length > 0 ? (
               currentCards.map((card) => (
-                <div key={card.id} className="card flex flex-col rounded-lg overflow-hidden  shadow-lg transition-all delay-100 ease-in-out w-full transform hover:scale-105 bg-gray-800" data-aos="fade-up">
+                <div key={card.id} className="card flex flex-col rounded-lg overflow-hidden shadow-lg transition-all delay-100 ease-in-out w-full transform hover:scale-105 bg-gray-800" data-aos="fade-up">
                   <div className="image rounded overflow-hidden h-64">
                     <img src={card.image} alt={card.title} className="w-full h-full object-cover" />
                   </div>
@@ -106,8 +137,11 @@ const Top = () => {
                       <button className="text-gray-400 hover:text-white focus:outline-none transform translate-x-0">
                         <AiOutlineShoppingCart size={24} />
                       </button>
-                      <button className="text-gray-400 hover:text-white focus:outline-none transform translate-x-0">
-                        <AiOutlineHeart size={24} />
+                      <button 
+                        className="text-gray-400 hover:text-white focus:outline-none transform translate-x-0"
+                        onClick={() => addFav(card.id)}
+                      >
+                        {isFav(card.id) ? <AiFillHeart size={24} /> : <AiOutlineHeart size={24} />}
                       </button>
                     </div>
                   </div>
@@ -119,7 +153,7 @@ const Top = () => {
           </div>
   
           <div className="pagination mt-10 flex justify-center">
-            {Array.from({ length: Math.ceil(filteredCards.length / cardsPerPage) }, (_, index) => (
+            {Array.from({ length: numberOfPages }, (_, index) => (
               <button 
                 key={index + 1} 
                 onClick={() => paginate(index + 1)} 
@@ -127,8 +161,8 @@ const Top = () => {
               >
                 {index + 1}
               </button>
-            ))} 
-          </div> 
+            ))}
+          </div>
         </div>
       </div>
     </div>
