@@ -30,18 +30,19 @@ const AuthPage = () => {
             }
 
             try {
-                const existingUsersResponse = await axios.get('http://localhost:3000/user');
+                const existingUsersResponse = await axios.get('ttps://irradiated-silicon-antler.glitch.me/user');
                 const existingUser = existingUsersResponse.data.find(u => u.email === formData.email);
                 if (existingUser) {
                     toast.error('Bu email ilə qeydiyyatdan keçmiş istifadəçi artıq var.');
                     return;
                 }
 
-                const response = await axios.post('http://localhost:3000/user', {
+                const response = await axios.post('ttps://irradiated-silicon-antler.glitch.me/user', {
                     name: formData.name,
                     email: formData.email,
                     password: formData.password,
-                    fav: []
+                    fav: [],
+                    basket:[]
                 });
 
                 if (response.status === 201) {
@@ -62,7 +63,7 @@ const AuthPage = () => {
             }
         } else {
             try {
-                const response = await axios.get('http://localhost:3000/user');
+                const response = await axios.get('ttps://irradiated-silicon-antler.glitch.me/user');
                 const user = response.data.find(u => u.email === formData.email && u.password === formData.password);
                 if (user) {
                     localStorage.setItem('currentUser', JSON.stringify(user));

@@ -5,6 +5,8 @@ import 'aos/dist/aos.css';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FaShoppingBag, FaShoppingCart } from 'react-icons/fa';
+import { FaBasketShopping } from 'react-icons/fa6';
 
 const Top = () => {
   const [cards, setCards] = useState([]);
@@ -12,7 +14,7 @@ const Top = () => {
   const [cardsPerPage] = useState(4);
   const [category, setCategory] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const api = "http://localhost:3000/cards";
+  const api = "https://irradiated-silicon-antler.glitch.me/cards";
   const [user, setUser] = useState(localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')) : null);
 
   useEffect(() => {
@@ -46,7 +48,31 @@ const Top = () => {
     setUser(updatedUser);
     localStorage.setItem('currentUser', JSON.stringify(updatedUser));
 
-    axios.patch(`http://localhost:3000/user/${user.id}`, { fav: updatedUser.fav })
+    axios.patch(`https://irradiated-silicon-antler.glitch.me/user/${user.id}`, { fav: updatedUser.fav })
+      .then(response => {
+        console.log('User updated:', response.data);
+      })
+      .catch(error => {
+        console.error('Error updating user:', error);
+      });
+  };
+
+  const addBasket = (id) => {
+    if (!user) {
+      toast.error("Səbətə əlavə etmək üçün hesabınıza giriş edin!");
+      return;
+    }
+
+    const updatedUser = { ...user };
+    if (updatedUser.basket.some(item => item.id === id)) {
+      updatedUser.basket = updatedUser.basket.filter(item => item.id !== id);
+    } else {
+      updatedUser.basket.push({ id, count: 1 });
+    }
+    setUser(updatedUser);
+    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+
+    axios.patch(`https://irradiated-silicon-antler.glitch.me/user/${user.id}`, { basket: updatedUser.basket })
       .then(response => {
         console.log('User updated:', response.data);
       })
@@ -57,6 +83,10 @@ const Top = () => {
 
   const isFav = (id) => {
     return user ? user.fav.includes(id) : false;
+  };
+
+  const isBasket = (id) => {
+    return user ? user.basket.some(item => item.id === id) : false;
   };
 
   const filteredCards = cards.filter(card =>
@@ -85,7 +115,7 @@ const Top = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentPage(prevPage => (prevPage % numberOfPages) + 1);
-    }, 5000); 
+    }, 50000);
     return () => clearInterval(interval);
   }, [numberOfPages]);
 
@@ -134,14 +164,11 @@ const Top = () => {
                       <p className="text-yellow-500 mt-2">{card.price}$</p>
                     </div>
                     <div className="flex justify-between items-center mt-4">
-                      <button className="text-gray-400 hover:text-white focus:outline-none transform translate-x-0">
-                        <AiOutlineShoppingCart size={24} />
+                      <button onClick={() => addBasket(card.id)} className="text-gray-400 hover:text-white focus:outline-none transform translate-x-0">
+                        {isBasket(card.id) ? <FaBasketShopping size={24} /> : <FaShoppingCart size={24} />}
                       </button>
-                      <button 
-                        className="text-gray-400 hover:text-white focus:outline-none transform translate-x-0"
-                        onClick={() => addFav(card.id)}
-                      >
-                        {isFav(card.id) ? <AiFillHeart size={24} /> : <AiOutlineHeart size={24} />}
+                      <button className="text-gray-400 hoverhover:text-white focus:outline-none transform translate-x-0"   onClick={() => addFav(card.id)} >   
+                          {isFav(card.id) ? <AiFillHeart size={24} /> : <AiOutlineHeart size={24} />}
                       </button>
                     </div>
                   </div>

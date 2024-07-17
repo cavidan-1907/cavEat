@@ -12,7 +12,7 @@ import axios from 'axios';
 const Chef = () => {
 const [chefs,setChef]=useState([]);
 
-const api="http://localhost:3000/chefs";
+const api="https://irradiated-silicon-antler.glitch.me/chefs";
 useEffect(() => {
 const fetchChef=async ()=>{
   const response = await axios.get(api)

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
 import { BiMenu } from 'react-icons/bi';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -21,11 +20,12 @@ function Navbar() {
       setScroll(false);
     }
   };
+
   const handleLogout = () => {
     localStorage.removeItem('currentUser');
     setUser(null);
     window.location.href = '/login';
-};
+  };
 
   useEffect(() => {
     AOS.init({ duration: 1000 });
@@ -36,49 +36,45 @@ function Navbar() {
   }, []);
 
   return (
-    <div className={`fixed p-[10px] top-0 z-30 w-[100%] ${scroll || menu ? 'bg-black' : 'bg-transparent'} transition-colors duration-300`}>
-      <nav className='container flex justify-between items-center'>
-        <Link to="/" className='text-[20px] font-bold text-white'>Cavidicano</Link>
+    <div className={`fixed p-2 top-0 z-30 w-full ${scroll || menu ? 'bg-black' : 'bg-transparent'} transition-colors duration-300`}>
+      <nav className='container mx-auto flex justify-between items-center'>
+        <Link to="/" className='text-2xl font-bold text-white'>Cavidicano</Link>
         <ul className='hidden md:flex gap-4 text-white'>
-          <li className='text-[19px]'><Link to="/">Home</Link></li>
-          <li className='text-[19px]'><Link to="/about">About</Link></li>
-          <li className='text-[19px]'><Link to="/menu">Menu</Link></li>
-          <li className='text-[19px]'><Link to="/Favorit">Favorit</Link></li>
-          {user?(<> 
-          <li className='text-[19px]'><Link>{user.name}</Link></li>
-          <li className='text-[19px]'>
-                                    <Button variant="link" className='logOut' onClick={handleLogout}>Logout</Button>
-                                </li>
-          </>
-          ):(
-                         <li className='text-[19px]'><Link to="/Login">Login</Link></li>
-          )
-          }
-        
-          <li className='text-[19px]'><Link to="/book-table" className="hover:underline" data-aos="fade-left">Order Now</Link></li>
+          <li className='text-lg'><Link to="/">Home</Link></li>
+          <li className='text-lg'><Link>About</Link></li>
+          <li className='text-lg'><Link to="/basket">Basket({user ? user.basket.length : 0})</Link></li>
+          <li className='text-lg'><Link to="/favorites">Favorites({user ? user.fav.length : 0})</Link></li>
+          {user ? (
+            <>
+              <li className='text-lg'><Link to="/profile">{user.name}</Link></li>
+              <li className='text-lg'>
+                <button className='text-white hover:underline' onClick={handleLogout}>Logout</button>
+              </li>
+            </>
+          ) : (
+            <li className='text-lg'><Link to="/login">Login</Link></li>
+          )}
+          <li className='text-lg'><Link to="/book-table" className="hover:underline" data-aos="fade-left">Order Now</Link></li>
         </ul>
-        <BiMenu onClick={openMenu} className='text-[30px] text-white cursor-pointer md:hidden' />
+        <BiMenu onClick={openMenu} className='text-4xl text-white cursor-pointer md:hidden' />
       </nav>
       <div className={`md:hidden overflow-hidden transition-max-height duration-1000 ${menu ? 'bg-black' : 'bg-transparent'} ${menu ? 'max-h-screen' : 'max-h-0'}`}>
-        <ul className='container flex flex-col gap-4 mt-4 text-white'>
-          <li className='text-[19px]'><Link to="/" className="hover:underline" data-aos="fade-left">Home</Link></li>
-          <li className='text-[19px]'><Link to="/about" className="hover:underline" data-aos="fade-left">About</Link></li>
-          <li className='text-[19px]'><Link to="/menu" className="hover:underline" data-aos="fade-left">Menu</Link></li>
-          <li className='text-[19px]'><Link to="/stories" className="hover:underline" data-aos="fade-left">Stories</Link></li>
-          {user?(<> 
-          <li className='text-[19px]'><Link>{user.name}</Link></li>
-          <li className='text-[19px]'>
-                                    <Button variant="link" className='logOut' onClick={handleLogout}>Logout</Button>
-                                </li>
-          
-          </>
-          
-          ):(
-                         <li className='text-[19px]'><Link to="/Login">Login</Link></li>
-          )
-          }
-        
-          <li className='text-[19px]'><Link to="/book-table" className="hover:underline" data-aos="fade-left">Order Now</Link></li>
+        <ul className='container mx-auto flex flex-col gap-4 mt-4 text-white'>
+          <li className='text-lg'><Link to="/" className="hover:underline" data-aos="fade-left">Home</Link></li>
+          <li className='text-lg'><Link className="hover:underline" data-aos="fade-left">About</Link></li>
+          <li className='text-lg'><Link to="/basket">Basket({user ? user.basket.length : 0})</Link></li>
+          <li className='text-lg'><Link to="/favorites">Favorites({user ? user.fav.length : 0})</Link></li>
+          {user ? (
+            <>
+              <li className='text-lg'><Link to="/profile">{user.name}</Link></li>
+              <li className='text-lg'>
+                <button className='text-white hover:underline' onClick={handleLogout}>Logout</button>
+              </li>
+            </>
+          ) : (
+            <li className='text-lg'><Link to="/login">Login</Link></li>
+          )}
+          <li className='text-lg'><Link className="hover:underline" data-aos="fade-left">Order Now</Link></li>
         </ul>
       </div>
       <hr />

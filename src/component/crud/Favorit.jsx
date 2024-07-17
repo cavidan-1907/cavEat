@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { AiOutlineHeart, AiFillHeart, AiOutlineShoppingCart } from 'react-icons/ai';
 import axios from 'axios';
+import { FaShoppingBag, FaShoppingCart } from 'react-icons/fa';
+import { FaBasketShopping } from 'react-icons/fa6';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -14,7 +16,7 @@ const Favorit = () => {
     const fetchFavs = async () => {
       if (user) {
         try {
-          const response = await axios.get(`http://localhost:3000/cards`);
+          const response = await axios.get(`https://irradiated-silicon-antler.glitch.me/cards`);
           const allCards = response.data;
           const favCards = allCards.filter(card => user.fav.includes(card.id));
           setFavCards(favCards);
@@ -41,7 +43,7 @@ const Favorit = () => {
     setUser(updatedUser);
     localStorage.setItem('currentUser', JSON.stringify(updatedUser));
 
-    axios.patch(`http://localhost:3000/user/${user.id}`, { fav: updatedUser.fav })
+    axios.patch(`https://irradiated-silicon-antler.glitch.me/user/${user.id}`, { fav: updatedUser.fav })
       .then(response => {
         console.log('User updated:', response.data);
         const updatedFavCards = favCards.filter(card => updatedUser.fav.includes(card.id));
@@ -56,7 +58,34 @@ const Favorit = () => {
     return user ? user.fav.includes(id) : false;
   };
 
-  // Pagination calculations
+  const addBasket = (id) => {
+    if (!user) {
+      toast.error("Səbətə əlavə etmək üçün hesabınıza giriş edin!");
+      return;
+    }
+
+    const updatedUser = { ...user };
+    if (updatedUser.basket.some(item => item.id === id)) {
+      updatedUser.basket = updatedUser.basket.filter(item => item.id !== id);
+    } else {
+      updatedUser.basket.push({ id, count: 1 });
+    }
+    setUser(updatedUser);
+    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+
+    axios.patch(`https://irradiated-silicon-antler.glitch.me/user/${user.id}`, { basket: updatedUser.basket })
+      .then(response => {
+        console.log('User updated:', response.data);
+      })
+      .catch(error => {
+        console.error('Error updating user:', error);
+      });
+  };
+
+  const isBasket = (id) => {
+    return user ? user.basket.some(item => item.id === id) : false;
+  };
+
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
   const currentCards = favCards.slice(indexOfFirstCard, indexOfLastCard);
@@ -93,8 +122,8 @@ const Favorit = () => {
                       <p className="text-yellow-500 mt-2">{card.price}$</p>
                     </div>
                     <div className="flex justify-between items-center mt-4">
-                      <button className="text-gray-400 hover:text-white focus:outline-none transform translate-x-0">
-                        <AiOutlineShoppingCart size={24} />
+                    <button onClick={() => addBasket(card.id)} className="text-gray-400 hover:text-white focus:outline-none transform translate-x-0">
+                        {isBasket(card.id) ? <FaBasketShopping size={24} /> : <FaShoppingCart size={24} />}
                       </button>
                       <button 
                         className="text-gray-400 hover:text-white focus:outline-none transform translate-x-0"
