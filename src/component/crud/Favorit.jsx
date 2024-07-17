@@ -125,7 +125,7 @@ const Favorit = () => {
         </div>
       </div>
     </div>
-  );
+  ); 
 }
 
 export default Favorit;
