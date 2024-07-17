@@ -4,7 +4,7 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const FavoritesPage = () => {
+const Favorit = () => {
   const [favCards, setFavCards] = useState([]);
   const [user, setUser] = useState(localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')) : null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -128,4 +128,4 @@ const FavoritesPage = () => {
   );
 }
 
-export default FavoritesPage;
+export default Favorit;
