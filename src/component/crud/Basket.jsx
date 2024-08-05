@@ -14,7 +14,7 @@ const BasketPage = () => {
     const fetchBasketCards = async () => {
       if (user) {
         try {
-          const response = await axios.get('https://irradiated-silicon-antler.glitch.me/cards');
+          const response = await axios.get('https://small-somber-tuba.glitch.me/cards');
           const allCards = response.data;
           const basketCards = allCards.filter(card => user.basket.some(item => item.id === card.id));
           setBasketCards(basketCards);
@@ -59,7 +59,7 @@ const BasketPage = () => {
     localStorage.setItem('currentUser3', JSON.stringify(updatedUser));
 
     try {
-      await axios.patch(`https://irradiated-silicon-antler.glitch.me/user/${user.id}`, { basket: updatedUser.basket });
+      await axios.patch(`https://small-somber-tuba.glitch.me/user/${user.id}`, { basket: updatedUser.basket });
       const updatedBasketCards = basketCards.filter(card => updatedUser.basket.some(item => item.id === card.id));
       setBasketCards(updatedBasketCards);
     } catch (error) {

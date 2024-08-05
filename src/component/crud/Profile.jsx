@@ -3,19 +3,19 @@ import { FaUserCircle, FaHeart, FaShoppingCart, FaSignOutAlt } from 'react-icons
 import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-
+import { useNavigate } from 'react-router-dom';
 const User = () => {
   const [user, setUser] = useState(localStorage.getItem('currentUser3') ? JSON.parse(localStorage.getItem('currentUser3')) : null);
   const [favorites, setFavorites] = useState([]);
   const [basket, setBasket] = useState([]);
-
+  const navigation= useNavigate();
   useEffect(() => {
     AOS.init({ duration: 1000 });
 
     const fetchData = async () => {
       if (user) {
         try {
-          const response = await axios.get('https://irradiated-silicon-antler.glitch.me/cards');
+          const response = await axios.get('https://small-somber-tuba.glitch.me/cards');
           const allCards = response.data;
           console.log('allCards:', allCards);
           console.log('user.fav:', user.fav);
@@ -37,7 +37,7 @@ const User = () => {
   const handleLogout = () => {
     localStorage.removeItem('currentUser3');
     setUser(null);
-    window.location.href = '/login';
+    navigation("/login")
   };
 
   return (

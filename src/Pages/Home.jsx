@@ -2,7 +2,7 @@ import React from 'react'
 import Card from "../component/Card"
 import Banner from "../component/Banner"
 import Top from "../component/crud/Top"
-import Chef from "../component/crud/Chef"
+// import Chef from "../component/crud/Chef"
 import Services from '../component/Services'
 function Home() {
   return (
@@ -11,7 +11,7 @@ function Home() {
       <Card/>
       <Services/>
       <Top/>
-      <Chef/>
+      {/* <Chef/> */}
     </div>
   )
 }

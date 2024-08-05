@@ -16,7 +16,7 @@ const Favorit = () => {
     const fetchFavs = async () => {
       if (user) {
         try {
-          const response = await axios.get(`https://irradiated-silicon-antler.glitch.me/cards`);
+          const response = await axios.get(`https://small-somber-tuba.glitch.me/cards`);
           const allCards = response.data;
           const favCards = allCards.filter(card => user.fav.includes(card.id));
           setFavCards(favCards);
@@ -43,7 +43,7 @@ const Favorit = () => {
     setUser(updatedUser);
     localStorage.setItem('currentUser3', JSON.stringify(updatedUser));
 
-    axios.patch(`https://irradiated-silicon-antler.glitch.me/user/${user.id}`, { fav: updatedUser.fav })
+    axios.patch(`https://small-somber-tuba.glitch.me/user/${user.id}`, { fav: updatedUser.fav })
       .then(response => {
         console.log('User updated:', response.data);
         const updatedFavCards = favCards.filter(card => updatedUser.fav.includes(card.id));
@@ -73,7 +73,7 @@ const Favorit = () => {
     setUser(updatedUser);
     localStorage.setItem('currentUse2r', JSON.stringify(updatedUser));
 
-    axios.patch(`https://irradiated-silicon-antler.glitch.me/user/${user.id}`, { basket: updatedUser.basket })
+    axios.patch(`https://small-somber-tuba.glitch.me/user/${user.id}`, { basket: updatedUser.basket })
       .then(response => {
         console.log('User updated:', response.data);
       })
