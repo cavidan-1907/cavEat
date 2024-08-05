@@ -30,7 +30,7 @@ const AuthPage = () => {
             }
 
             try {
-                const existingUsersResponse = await axios.get('https://irradiated-silicon-antler.glitch.me/user');
+                const existingUsersResponse = await axios.get('https://small-somber-tuba.glitch.me/user');
                 const existingUser = existingUsersResponse.data.find(u => u.email === formData.email);
                 if (existingUser) {
                     toast.error('Bu email ilə qeydiyyatdan keçmiş istifadəçi artıq var.');
@@ -39,7 +39,7 @@ const AuthPage = () => {
 
                 console.log(existingUsersResponse.data)
 
-                const response = await axios.post('https://irradiated-silicon-antler.glitch.me/user', {
+                const response = await axios.post('https://small-somber-tuba.glitch.me/user', {
                     name: formData.name,
                     email: formData.email,
                     password: formData.password,
@@ -65,7 +65,7 @@ const AuthPage = () => {
             }
         } else {
             try {
-                const response = await axios.get('https://irradiated-silicon-antler.glitch.me/user');
+                const response = await axios.get('https://small-somber-tuba.glitch.me/user');
                 const user = response.data.find(u => u.email === formData.email && u.password === formData.password);
                 if (user) {
                     localStorage.setItem('currentUser3', JSON.stringify(user));
